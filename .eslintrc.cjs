@@ -1,3 +1,5 @@
+const { rules } = require('eslint-plugin-react-refresh');
+
 module.exports = {
   root: true,
   env: {
@@ -20,4 +22,9 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
+  rules: {
+    'object-curly-newline': 'off',
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+  },
 };

@@ -10,6 +10,9 @@
 
     /* Bundler mode */
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
 
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -27,8 +30,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src/**/*"],
-  "paths": {
-    "@/*": ["src/*"]
-  }
+  "include": ["src/**/*"]
 }
