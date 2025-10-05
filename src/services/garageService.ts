@@ -45,7 +45,7 @@ const getCar = async (id: number) => {
   }
 };
 
-const createCar = async (car: Car) => {
+const createCar = async (car: Omit<Car, 'id'>) => {
   try {
     const response = await fetch(`${baseUrl}/garage`, {
       method: 'POST',

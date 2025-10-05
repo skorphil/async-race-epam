@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import cars from '../garage';
+import cars from '../garageService';
 
 describe('getCars', () => {
   afterEach(() => {
@@ -97,7 +97,9 @@ describe('createCar', () => {
     const mockFetch = vi.fn(() => mockResponse);
 
     vi.stubGlobal('fetch', mockFetch);
-    expect(await cars.createCar(body)).toEqual(body);
+    expect(
+      await cars.createCar({ name: body.name, color: body.color }),
+    ).toEqual(body);
   });
 
   describe('createCar', () => {
