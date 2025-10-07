@@ -1,3 +1,1 @@
-import garage from './garageService';
-
-export { garage };
+export * from './garageService';

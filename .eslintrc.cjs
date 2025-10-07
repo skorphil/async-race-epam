@@ -14,7 +14,15 @@ module.exports = {
     'vite.config.ts',
     '*/**.css',
   ],
-  overrides: [],
+  overrides: [
+    {
+      // Allow mocking in tests
+      files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
+      rules: {
+        'import/first': 'off',
+      },
+    },
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.app.json',
@@ -24,7 +32,16 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'object-curly-newline': 'off',
+    'implicit-arrow-linebreak': 'off', // conflicting with limit characters in a line
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    // 'max-lines-per-function': ['error', 40],
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state'], // Allow mutations within redux Toolkit
+      },
+    ],
   },
 };

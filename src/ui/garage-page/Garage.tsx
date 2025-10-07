@@ -1,46 +1,39 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import styles from './Garage.module.css';
-import type { Car } from '../../model';
-import { garage } from '../../services';
 import CarContainer from '../shared/CarContainer';
-import garageService from '@/services/garageService';
-
-function handleCarCreate() {
-  garageService.createCar({ name: 'new car', color: '#ffffff' });
-}
-
-function handleCarDelete(id: number) {
-  garageService.deleteCar(id);
-}
+import { useCreateCarMutation, useGetCarsQuery } from '@/services/';
 
 /**
- * Displays all care in the garage by pages
+ * Displays all cars in the garage by pages
  */
 function Garage() {
-  const { pageId } = useParams();
-  const [cars, setCars] = useState<null | Car[]>(null);
+  const [searchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get('page') || '1', 10);
+  const { data, error } = useGetCarsQuery({
+    page: currentPage,
+    limit: 7,
+  });
+  const [createCar] = useCreateCarMutation();
+  async function handleCarCreate() {
+    createCar({ name: 'NewCar', color: '#15aa76ff' });
+  }
 
-  useEffect(() => {
-    const fetchCars = async () => {
-      setCars((await garage.getCars(Number(pageId) || 1)).cars);
-    };
-    fetchCars();
-  }, []);
+  const cars = data?.cars ?? [];
+  const totalCount = data?.totalCount ?? 0;
+
   return (
     <div className={styles.container}>
+      {error && <p>{error.error ? error.error : error.message}</p>}
+      <p>{totalCount}</p>
       <button type="button">Add 100 cars</button>
-      <button onClick={handleCarCreate} type="button">
+      <button type="button" onClick={handleCarCreate}>
         Add car
       </button>
-      {cars?.map((car) => (
-        <CarContainer
-          onDelete={() => handleCarDelete(car.id)}
-          name={car.name}
-          id={car.id}
-          color={car.color}
-        />
-      ))}
+      <section className={styles.carsList}>
+        {cars?.map((car) => (
+          <CarContainer id={car.id} />
+        ))}
+      </section>
     </div>
   );
 }
