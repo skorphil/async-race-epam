@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { garageApi } from '@/services/garageService';
+import { backendApi } from '@/services';
+import raceSlice from './raceSlice';
 
 export const store = configureStore({
   reducer: {
-    [garageApi.reducerPath]: garageApi.reducer,
+    [raceSlice.name]: raceSlice.reducer,
+    [backendApi.reducerPath]: backendApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(garageApi.middleware),
+    getDefaultMiddleware().concat(backendApi.middleware),
 });
 
 setupListeners(store.dispatch);

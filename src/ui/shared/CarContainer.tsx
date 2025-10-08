@@ -1,34 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import type { Car } from '@/model';
 import styles from './CarContainer.module.css';
-import {
-  useDeleteCarMutation,
-  useGetCarQuery,
-  useUpdateCarMutation,
-} from '@/services/garageService';
+import { garageApi } from '@/services/garageService';
 
-type CarContainerProps = { id: number };
+type CarContainerProps = { id: number; children: ReactElement };
 
 /**
  * Car container, displaying details of a car
  */
 function CarContainer(props: CarContainerProps) {
-  const { id } = props;
-  const [deleteCar] = useDeleteCarMutation();
+  const { id, children } = props;
 
-  const { data } = useGetCarQuery(id);
-  const [updateCar] = useUpdateCarMutation();
-  const [name, setName] = useState<string>();
-  const [color, setColor] = useState<string>();
+  const { data } = garageApi.useGetCarQuery(id);
+  const [updateCar] = garageApi.useUpdateCarMutation();
+  const [name, setName] = useState<string>('');
+  const [color, setColor] = useState<string>('');
 
   function handleCarUpdate(car: Partial<Car>) {
     if (!data) return;
     const updatedCar = { ...data, ...car };
     updateCar(updatedCar);
-  }
-
-  function handleCarDelete() {
-    deleteCar(id);
   }
 
   useEffect(() => {
@@ -65,9 +56,7 @@ function CarContainer(props: CarContainerProps) {
         />
       </label>
       <p>{`Id: ${id}`}</p>
-      <button type="button" onClick={handleCarDelete}>
-        delete
-      </button>
+      {children}
     </div>
   );
 }

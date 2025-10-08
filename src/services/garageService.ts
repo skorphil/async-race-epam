@@ -1,7 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { isCar, isCarsArray, type Car } from '@/model';
-
-const baseUrl = 'http://localhost:3000/garage';
+import { backendApi } from './apiService';
 
 type GetCarsArgs = {
   page: number;
@@ -13,15 +11,12 @@ type GetCarsResponse = {
   totalCount: number;
 };
 
-export const garageApi = createApi({
-  reducerPath: 'garageApi',
-  tagTypes: ['CarList', 'Car'],
-  baseQuery: fetchBaseQuery({ baseUrl }),
+export const garageApi = backendApi.injectEndpoints({
   endpoints: (builder) => ({
     getCars: builder.query<GetCarsResponse, GetCarsArgs>({
       providesTags: ['CarList'],
       query: ({ page = 1, limit = 7 }) => {
-        const url = '/';
+        const url = 'garage';
         const params = new URLSearchParams();
         params.append('_page', page.toString());
         params.append('_limit', limit.toString());
@@ -44,7 +39,7 @@ export const garageApi = createApi({
     getCar: builder.query<Car, number>({
       providesTags: (_, __, id) => [{ type: 'Car', id }],
       query: (id: number) => ({
-        url: `/${id}`,
+        url: `garage/${id}`,
       }),
       async transformResponse(rawCarsData): Promise<Car> {
         if (isCar(rawCarsData)) {
@@ -56,7 +51,7 @@ export const garageApi = createApi({
 
     createCar: builder.mutation<Car, Omit<Car, 'id'>>({
       query: (carData: Omit<Car, 'id'>) => ({
-        url: '/',
+        url: 'garage',
         method: 'POST',
         body: carData,
       }),
@@ -64,14 +59,14 @@ export const garageApi = createApi({
     }),
     deleteCar: builder.mutation<Car, number>({
       query: (id: number) => ({
-        url: `/${id}`,
+        url: `garage/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['CarList'],
     }),
     updateCar: builder.mutation<Car, Car>({
       query: (car: Car) => ({
-        url: `/${car.id}`,
+        url: `garage/${car.id}`,
         method: 'PUT',
         body: car,
       }),
@@ -79,11 +74,3 @@ export const garageApi = createApi({
     }),
   }),
 });
-
-export const {
-  useGetCarsQuery,
-  useCreateCarMutation,
-  useDeleteCarMutation,
-  useGetCarQuery,
-  useUpdateCarMutation,
-} = garageApi;
