@@ -1,29 +1,51 @@
-import { createSlice, isRejectedWithValue } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  isRejectedWithValue,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
 import { engineApi } from '@/services';
 
 type CarRaceState = {
+  ongoingRequest: undefined | string;
   state: 'drive' | 'broken' | 'ready' | 'starting' | 'finished' | null;
   driveStarted?: number;
   driveStopped?: number;
   time?: number;
 };
 
-type RaceState = Record<number, CarRaceState>;
+type RaceState =
+  | {
+      winner?: number;
+      cars: Record<number, CarRaceState>;
+    }
+  | undefined;
 
-const initialState: RaceState = {};
+const initialState: RaceState = {
+  cars: {},
+};
 
 const raceSlice = createSlice({
   name: 'race',
   initialState,
-  reducers: {},
+  reducers: {
+    resetRace: (state) => {
+      state.cars = {};
+    },
+    resetCarRace: (state, action: PayloadAction<number>) => {
+      const id = action.payload;
+      delete state.cars[id];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addMatcher(
         engineApi.endpoints.startEngine.matchPending,
         (state, action) => {
           const id = action.meta.arg.originalArgs;
-          state[id] = {
-            ...state[id],
+          const currentRequestId = action.meta.requestId;
+          state.cars[id] = {
+            ...state.cars[id],
+            ongoingRequest: currentRequestId,
             state: 'starting',
           };
         },
@@ -33,8 +55,9 @@ const raceSlice = createSlice({
         (state, action) => {
           const { distance, velocity } = action.payload;
           const id = action.meta.arg.originalArgs;
-          state[id] = {
-            ...state[id],
+          state.cars[id] = {
+            ...state.cars[id],
+            ongoingRequest: undefined,
             state: 'ready',
             time: distance / velocity,
           };
@@ -44,8 +67,10 @@ const raceSlice = createSlice({
         engineApi.endpoints.startDrive.matchPending,
         (state, action) => {
           const id = action.meta.arg.originalArgs;
-          state[id] = {
-            ...state[id],
+          const currentRequestId = action.meta.requestId;
+          state.cars[id] = {
+            ...state.cars[id],
+            ongoingRequest: currentRequestId,
             driveStarted: Date.now(),
             state: 'drive',
           };
@@ -57,8 +82,9 @@ const raceSlice = createSlice({
           const id = action.meta.arg.originalArgs;
           if (isRejectedWithValue(action)) {
             if (action.payload?.status === 500) {
-              state[id] = {
-                ...state[id],
+              state.cars[id] = {
+                ...state.cars[id],
+                ongoingRequest: undefined,
                 driveStopped: Date.now(),
                 state: 'broken',
               };
@@ -70,8 +96,9 @@ const raceSlice = createSlice({
         engineApi.endpoints.startDrive.matchFulfilled,
         (state, action) => {
           const id = action.meta.arg.originalArgs;
-          state[id] = {
-            ...state[id],
+          state.cars[id] = {
+            ...state.cars[id],
+            ongoingRequest: undefined,
             driveStopped: Date.now(),
             state: 'finished',
           };

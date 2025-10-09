@@ -13,6 +13,12 @@ export const engineApi = backendApi.injectEndpoints({
         method: 'PATCH',
       }),
     }),
+    stopEngine: build.mutation<Engine, number>({
+      query: (id: number) => ({
+        url: `engine?id=${id}&status=${'stopped'}`,
+        method: 'PATCH',
+      }),
+    }),
     startDrive: build.mutation<void, number>({
       query: (id: number) => ({
         url: `engine?id=${id}&status=${'drive'}`,

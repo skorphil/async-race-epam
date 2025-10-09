@@ -1,30 +1,27 @@
-import { garageApi, engineApi } from '@/services';
-import CarContainer from '../shared/CarContainer';
 import { useSelector } from 'react-redux';
+import { garageApi } from '@/services';
+import CarContainer from '../shared/CarContainer';
 import type { RootState } from '@/store/store';
-import { useState } from 'react';
+import useRace from './useRace';
+
+export interface RtkAbortablePromise extends Promise<any> {
+  abort: () => void;
+}
 
 type CarGarageContainerProps = {
   id: number;
 };
 /**
- * New component
+ * Container to display car info in the garage
  */
 function CarGarageContainer(props: CarGarageContainerProps) {
+  const { carReset, carStart } = useRace({ cars: [] });
   const { id } = props;
   const [deleteCar] = garageApi.useDeleteCarMutation();
-  const [startEngine] = engineApi.useStartEngineMutation();
-  const [startDrive] = engineApi.useStartDriveMutation();
-  const raceStatus = useSelector((state: RootState) => state.race[id]);
-  // const [driving, setDriving] = useState(false);
+  const raceStatus = useSelector((state: RootState) => state.race.cars[id]);
 
   function handleCarDelete(carId: number) {
     deleteCar(carId);
-  }
-
-  async function handleStartDrive(carId: number) {
-    await startEngine(carId);
-    await startDrive(carId);
   }
 
   return (
@@ -35,11 +32,13 @@ function CarGarageContainer(props: CarGarageContainerProps) {
           Delete
         </button>
         {(raceStatus?.state ?? null) === null ? (
-          <button type="button" onClick={() => handleStartDrive(id)}>
+          <button type="button" onClick={() => carStart(id)}>
             Start
           </button>
         ) : (
-          <button>Reset</button>
+          <button type="button" onClick={() => carReset(id)}>
+            Reset
+          </button>
         )}
         <p>{raceStatus?.state || 'idle'}</p>
       </div>

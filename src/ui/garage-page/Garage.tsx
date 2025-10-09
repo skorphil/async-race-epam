@@ -1,7 +1,8 @@
 import { useSearchParams } from 'react-router';
 import styles from './Garage.module.css';
-import { engineApi, garageApi } from '@/services/';
 import CarGarageContainer from './CarGarageContainer';
+import useRace from './useRace';
+import { garageApi } from '@/services';
 
 /**
  * Displays all cars in the garage by pages
@@ -14,8 +15,10 @@ function Garage() {
     limit: 7,
   });
   const [createCar] = garageApi.useCreateCarMutation();
-  const [startDrive] = engineApi.useStartDriveMutation();
-  const [startEngine] = engineApi.useStartEngineMutation();
+  const { raceReset, raceStart, raceState } = useRace({
+    cars: data?.cars || [],
+  });
+
   async function handleCarCreate() {
     createCar({ name: 'NewCar', color: '#15aa76ff' });
   }
@@ -24,15 +27,11 @@ function Garage() {
   const totalCount = data?.totalCount ?? 0;
 
   async function handleRaceStart() {
-    const enginePromises = cars.map(({ id }) => startEngine(id));
-    await Promise.all(enginePromises);
-    const carPromises = cars.map(({ id }) =>
-      startDrive(id)
-        .unwrap()
-        .then(() => id),
-    );
-    const winner = await Promise.any(carPromises);
-    console.info('winner', winner);
+    raceStart();
+  }
+
+  async function handleRaceReset() {
+    raceReset();
   }
 
   return (
@@ -40,9 +39,15 @@ function Garage() {
       {error && <p>{error.error ? error.error : error.message}</p>}
       <p>{totalCount}</p>
       <button type="button">Add 100 cars</button>
-      <button type="button" onClick={handleRaceStart}>
-        Race Start
-      </button>
+      {Object.keys(raceState.cars).length === 0 ? (
+        <button type="button" onClick={handleRaceStart}>
+          Race Start
+        </button>
+      ) : (
+        <button type="button" onClick={handleRaceReset}>
+          Race Reset
+        </button>
+      )}
       <button type="button" onClick={handleCarCreate}>
         Add car
       </button>
