@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { garageApi } from '@/services';
+import { garageApi, winnersApi } from '@/services';
 import CarContainer from '../shared/CarContainer';
 import type { RootState } from '@/store/store';
 import useRace from './useRace';
@@ -17,6 +17,7 @@ function CarGarageContainer(props: CarGarageContainerProps) {
   const { carReset, carStart } = useRace({ cars: [] });
   const { id } = props;
   const [deleteCar] = garageApi.useDeleteCarMutation();
+  const [deleteWinner] = winnersApi.useDeleteWinnerMutation();
   const raceStatus = useSelector((state: RootState) => state.race.cars[id]);
   const animation = calculateAnimation({
     carState: raceStatus?.state,
@@ -27,6 +28,7 @@ function CarGarageContainer(props: CarGarageContainerProps) {
 
   function handleCarDelete(carId: number) {
     deleteCar(carId);
+    deleteWinner(carId);
   }
 
   return (

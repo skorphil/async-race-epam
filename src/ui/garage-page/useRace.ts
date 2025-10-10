@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { Car } from '@/model';
-import { engineApi } from '@/services';
+import { engineApi, winnersApi } from '@/services';
 import raceSlice from '@/store/raceSlice';
 import { store, type AppDispatch, type RootState } from '@/store/store';
 import { RaceContext } from '../providers';
@@ -24,6 +24,9 @@ function useRace(props: UseRaceProps) {
   const [stopEngine] = engineApi.useStopEngineMutation();
   const { resetCarRace } = raceSlice.actions;
   const raceState = useSelector((state: RootState) => state.race);
+  const [updateWinner] = winnersApi.useUpdateWinnerMutation();
+  const [getWinner] = winnersApi.useLazyGetWinnerQuery();
+  const [addWinner] = winnersApi.useAddWinnerMutation();
 
   async function carReset(id: number) {
     if (ongoingRequests[id] instanceof Promise) ongoingRequests[id].abort();
@@ -54,9 +57,17 @@ function useRace(props: UseRaceProps) {
       ongoingRequests[id] = drivePromise;
       return drivePromise.unwrap().then(() => id);
     });
-    const winner = await Promise.any(carPromises);
-    // TODO Popup call
-    console.info('winner', winner);
+    try {
+      const winner = await Promise.any(carPromises);
+      // TODO Popup call
+      if (winner) {
+        const { time } = store.getState().race.cars[winner];
+        saveWinner(winner, Math.round(((time || 0) / 1000) * 100) / 100);
+      }
+      console.info('winner', winner);
+    } catch {
+      console.error('No cars have finished');
+    }
   }
 
   async function raceReset() {
@@ -66,7 +77,25 @@ function useRace(props: UseRaceProps) {
     Promise.all(carResetPromises);
   }
 
-  return { raceReset, carReset, raceStart, carStart, raceState };
+  async function saveWinner(id: number, time: number) {
+    const winner = await getWinner(id);
+    if (winner.data) {
+      const newTime = Math.min(winner.data.time, time);
+      updateWinner({
+        id,
+        time: newTime,
+        wins: winner.data.wins + 1,
+      });
+    } else {
+      addWinner({
+        id,
+        time,
+        wins: 1,
+      });
+    }
+  }
+
+  return { raceReset, carReset, raceStart, carStart, raceState, saveWinner };
 }
 
 export default useRace;

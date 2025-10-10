@@ -3,7 +3,7 @@ import type { Car } from '@/model';
 import styles from './CarContainer.module.css';
 import { garageApi } from '@/services/garageService';
 
-type CarContainerProps = { id: number; children: ReactElement };
+type CarContainerProps = { id: number; children?: ReactElement };
 
 /**
  * Car container, displaying details of a car
@@ -30,10 +30,10 @@ function CarContainer(props: CarContainerProps) {
 
   return (
     <div className={styles.container}>
-      <label htmlFor="carName">
+      <label htmlFor={`${id}-car-name`}>
         Name
         <input
-          id="carName"
+          id={`${id}-car-name`}
           onBlur={() => handleCarUpdate({ name })}
           onChange={(e) => {
             const newName = e.currentTarget.value;
@@ -42,11 +42,11 @@ function CarContainer(props: CarContainerProps) {
           value={name}
         />
       </label>
-      <label htmlFor="color">
+      <label htmlFor={`${id}-color`}>
         Color
         <input
           type="color"
-          id="color"
+          id={`${id}-color`}
           onBlur={() => handleCarUpdate({ color })}
           onChange={(e) => {
             const newColor = e.currentTarget.value;

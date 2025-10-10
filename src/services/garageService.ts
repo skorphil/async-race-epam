@@ -70,7 +70,7 @@ export const garageApi = backendApi.injectEndpoints({
         method: 'PUT',
         body: car,
       }),
-      invalidatesTags: (_, __, car) => ['CarList', { type: 'Car', id: car.id }],
+      invalidatesTags: (_, __, car) => [{ type: 'Car', id: car.id }],
     }),
   }),
 });
