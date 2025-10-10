@@ -1,31 +1,41 @@
 import { useSearchParams } from 'react-router';
+import { useEffect } from 'react';
 import styles from './Garage.module.css';
 import CarGarageContainer from './CarGarageContainer';
 import useRace from './useRace';
 import { garageApi } from '@/services';
 
+const carsPerPage = 7;
+
 /**
  * Displays all cars in the garage by pages
  */
 function Garage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const { data, error } = garageApi.useGetCarsQuery({
     page: currentPage,
-    limit: 7,
+    limit: carsPerPage,
   });
   const [createCar] = garageApi.useCreateCarMutation();
   const { raceReset, raceStart, raceState } = useRace({
     cars: data?.cars || [],
   });
-
-  async function handleCarCreate() {
-    createCar({ name: 'NewCar', color: '#15aa76ff' });
-  }
+  useEffect(() => {
+    if (data?.cars.length === 0 && data.totalCount > 0) {
+      const targetPage = Math.ceil(data.totalCount / carsPerPage);
+      setSearchParams({
+        page: targetPage.toString(),
+      });
+    }
+  }, [data]);
 
   const cars = data?.cars ?? [];
   const totalCount = data?.totalCount ?? 0;
 
+  async function handleCarCreate() {
+    createCar({ name: 'NewCar', color: '#1576ff' });
+  }
   async function handleRaceStart() {
     raceStart();
   }
@@ -53,7 +63,7 @@ function Garage() {
       </button>
       <section className={styles.carsList}>
         {cars?.map((car) => (
-          <CarGarageContainer id={car.id} />
+          <CarGarageContainer key={`car-${car.id}`} id={car.id} />
         ))}
       </section>
     </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { Car } from '@/model';
 import { engineApi } from '@/services';
 import raceSlice from '@/store/raceSlice';
-import type { AppDispatch, RootState } from '@/store/store';
+import { store, type AppDispatch, type RootState } from '@/store/store';
 import { RaceContext } from '../providers';
 
 type UseRaceProps = {
@@ -26,7 +26,6 @@ function useRace(props: UseRaceProps) {
   const raceState = useSelector((state: RootState) => state.race);
 
   async function carReset(id: number) {
-    console.debug(ongoingRequests);
     if (ongoingRequests[id] instanceof Promise) ongoingRequests[id].abort();
     await stopEngine(id);
     dispatch(resetCarRace(id));
@@ -45,16 +44,18 @@ function useRace(props: UseRaceProps) {
     const enginePromises = carsOnPage.map(({ id }) => {
       const enginePromise = startEngine(id);
       ongoingRequests[id] = enginePromise;
-      console.debug(ongoingRequests);
       return enginePromise;
     });
     await Promise.allSettled(enginePromises);
     const carPromises = carsOnPage.map(({ id }) => {
+      // Ignore cars that possibly being reset during race
+      if (!Object.hasOwn(store.getState().race.cars, id)) return undefined;
       const drivePromise = startDrive(id);
       ongoingRequests[id] = drivePromise;
       return drivePromise.unwrap().then(() => id);
     });
     const winner = await Promise.any(carPromises);
+    // TODO Popup call
     console.info('winner', winner);
   }
 

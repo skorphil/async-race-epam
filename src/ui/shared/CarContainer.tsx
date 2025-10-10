@@ -13,8 +13,8 @@ function CarContainer(props: CarContainerProps) {
 
   const { data } = garageApi.useGetCarQuery(id);
   const [updateCar] = garageApi.useUpdateCarMutation();
-  const [name, setName] = useState<string>('');
-  const [color, setColor] = useState<string>('');
+  const [name, setName] = useState<string>(() => data?.name || '');
+  const [color, setColor] = useState<string>(() => data?.color || '#000000');
 
   function handleCarUpdate(car: Partial<Car>) {
     if (!data) return;

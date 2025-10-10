@@ -35,6 +35,7 @@ module.exports = {
     'implicit-arrow-linebreak': 'off', // conflicting with limit characters in a line
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    'react/require-default-props': 'off', // to prevent conflicts with functional React Components
     // 'max-lines-per-function': ['error', 40],
     'no-param-reassign': [
       'error',
