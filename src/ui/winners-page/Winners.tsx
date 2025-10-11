@@ -5,8 +5,8 @@ import { winnersApi } from '@/services';
 import styles from './Winners.module.css';
 import WinnerRow from './WinnerRow';
 import { store, type AppDispatch } from '@/store/store';
-import raceSlice from '@/store/raceSlice';
 import Pagination from '../shared/Pagination';
+import { winnersPageActions } from '@/store';
 
 const winnersPerPage = 3;
 
@@ -62,8 +62,12 @@ function Winners() {
   const winners = data?.winners ?? [];
   const totalCount = data?.totalCount ?? 0;
 
+  const handlePageChange = (targetPage: number) => {
+    dispatch(winnersPageActions.setPage(targetPage));
+  };
+
   useEffect(() => {
-    const { order, page, sort } = store.getState().race.uiState;
+    const { order, page, sort } = store.getState().winnersPage;
     if (!searchParams.has('sort') && sort) {
       setSearchParams((params) => {
         const newParams = new URLSearchParams(params);
@@ -86,13 +90,13 @@ function Winners() {
       });
     }
     if (searchParams.has('sort')) {
-      dispatch(raceSlice.actions.setSort(queryParams.sort));
+      dispatch(winnersPageActions.setSort(queryParams.sort));
     }
     if (searchParams.has('order')) {
-      dispatch(raceSlice.actions.setOrder(queryParams.order));
+      dispatch(winnersPageActions.setOrder(queryParams.order));
     }
     if (searchParams.has('page')) {
-      dispatch(raceSlice.actions.setPage(queryParams.page));
+      dispatch(winnersPageActions.setPage(queryParams.page));
     }
   }, []);
 
@@ -102,13 +106,9 @@ function Winners() {
       setSearchParams({
         page: targetPage.toString(),
       });
-      dispatch(raceSlice.actions.setPage(targetPage));
+      handlePageChange(targetPage);
     }
   }, [winners, totalCount]);
-
-  const handlePageChange = (targetPage: number) => {
-    dispatch(raceSlice.actions.setPage(targetPage));
-  };
 
   return (
     <div className={styles.container}>
