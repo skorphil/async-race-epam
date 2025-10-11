@@ -13,15 +13,23 @@ type CarRaceState = {
   time?: number;
 };
 
+type SortOption = 'wins' | 'id' | 'time';
+type OrderOption = 'ASC' | 'DESC';
+
 type RaceState =
   | {
-      winner?: number;
+      uiState: {
+        sort?: SortOption;
+        page?: number;
+        order?: OrderOption;
+      };
       cars: Record<number, CarRaceState>;
     }
   | undefined;
 
 const initialState: RaceState = {
   cars: {},
+  uiState: {},
 };
 
 const raceSlice = createSlice({
@@ -34,6 +42,18 @@ const raceSlice = createSlice({
     resetCarRace: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       delete state.cars[id];
+    },
+    setPage: (state, action: PayloadAction<number>) => {
+      const page = action.payload;
+      state.uiState.page = page;
+    },
+    setSort: (state, action: PayloadAction<SortOption>) => {
+      const sort = action.payload;
+      state.uiState.sort = sort;
+    },
+    setOrder: (state, action: PayloadAction<OrderOption>) => {
+      const order = action.payload;
+      state.uiState.order = order;
     },
   },
   extraReducers: (builder) => {
