@@ -1,3 +1,6 @@
+[Rationale](/RATIONALE.md)
+
+
 ## Checklist \_\_\_/400 pts
 
 ## 🚀 UI Deployment
@@ -22,10 +25,10 @@
   - [ ] Car creation and editing panel
   - [x] Race control panel
   - [x] Garage section
-- [ ] **Winners View Content (10 points):** The "Winners" view should display:
+- [x] **Winners View Content (10 points):** The "Winners" view should display:
   - [x] Name of view ("Winners")
-  - [x] Winners table
-  - [ ] Pagination
+  - [ ] Winners table
+  - [x] Pagination
 - [ ] **Persistent State (30 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
 
 ## Garage View (90 points)
@@ -42,8 +45,8 @@
 ## 🏆 Winners View (50 points)
 
 - [x] **Display Winners (15 points):** After some car wins it should be displayed at the "Winners view" table.
-- [ ] **Pagination for Winners (10 points):** Implement pagination for the "Winners" view, with 10 winners per page.
-- [ ] **Winners Table (15 points):** The table should include columns for the car's №, image, name, number of wins, and best time in seconds. If the same car wins more than once the number of wins should be incremented while best time should be saved only if it's better than the stored one.
+- [x] **Pagination for Winners (10 points):** Implement pagination for the "Winners" view, with 10 winners per page.
+- [x] **Winners Table (15 points):** The table should include columns for the car's №, image, name, number of wins, and best time in seconds. If the same car wins more than once the number of wins should be incremented while best time should be saved only if it's better than the stored one.
 - [ ] **Sorting Functionality (10 points):** Allow users to sort the table by the number of wins and best time, in ascending or descending order.
 
 ## 🚗 Race (170 points)
@@ -55,7 +58,7 @@
 - [x] **Reset Race Button (15 points):** Reset button should return all cars to their starting positions.
 - [ ] **Winner Announcement (5 points):** After some car finishes first user should see the message contains car's name that shows which one has won.
 - [x] **Button States (20 points):** Start engine button should be disabled in case car is already in driving mode. As well as stop engine button should be disabled when car is on it's initial place.
-- [ ] **Actions during the race (50 points):** Control over actions during a running race. Such as, deleting or editing a car, changing a page or view. Adding new cars. You can block buttons and stop the race. The main thing is to ensure predictable operation of the application.
+- [x] **Actions during the race (50 points):** Control over actions during a running race. Such as, deleting or editing a car, changing a page or view. Adding new cars. You can block buttons and stop the race. The main thing is to ensure predictable operation of the application.
 
 ## 🎨 Prettier and ESLint Configuration (10 points)
 

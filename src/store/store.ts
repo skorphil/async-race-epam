@@ -4,9 +4,11 @@ import { backendApi } from '@/services';
 import raceSlice from './raceSlice';
 import winnersPageSlice from './winnersPageSlice';
 import garagePageSlice from './garagePageSlice';
+import newCarFormSlice from './newCarFormSlice';
 
 export const store = configureStore({
   reducer: {
+    [newCarFormSlice.name]: newCarFormSlice.reducer,
     [raceSlice.name]: raceSlice.reducer,
     [garagePageSlice.name]: garagePageSlice.reducer,
     [winnersPageSlice.name]: winnersPageSlice.reducer,

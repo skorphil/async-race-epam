@@ -8,6 +8,7 @@ import { garageApi } from '@/services';
 import Pagination from '../shared/Pagination';
 import { garagePageActions, store } from '@/store';
 import type { AppDispatch } from '@/store/store';
+import NewCarForm from './NewCarForm';
 
 const carsPerPage = 7;
 type NumberString = string;
@@ -36,7 +37,6 @@ function Garage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParams = getQueryParams(searchParams.get('page'));
   const { data, error } = garageApi.useGetCarsQuery(queryParams);
-  const [createCar] = garageApi.useCreateCarMutation();
   const { raceReset, raceStart, raceState } = useRace({
     cars: data?.cars || [],
   });
@@ -73,9 +73,6 @@ function Garage() {
   const cars = data?.cars ?? [];
   const totalCount = data?.totalCount ?? 0;
 
-  async function handleCarCreate() {
-    createCar({ name: 'NewCar', color: '#1576ff' });
-  }
   async function handleRaceStart() {
     raceStart();
   }
@@ -89,6 +86,7 @@ function Garage() {
       {error && <p>{error.error ? error.error : error.message}</p>}
       <p>{totalCount}</p>
       <button type="button">Add 100 cars</button>
+      <NewCarForm />
       {Object.keys(raceState.cars).length === 0 ? (
         <button type="button" onClick={handleRaceStart}>
           Race Start
@@ -98,9 +96,6 @@ function Garage() {
           Race Reset
         </button>
       )}
-      <button type="button" onClick={handleCarCreate}>
-        Add car
-      </button>
       <section className={styles.carsList}>
         {cars?.map((car) => (
           <CarGarageContainer key={`car-${car.id}`} id={car.id} />
