@@ -7,6 +7,7 @@ import WinnerRow from './WinnerRow';
 import { store, type AppDispatch } from '@/store/store';
 import Pagination from '../shared/Pagination';
 import { winnersPageActions } from '@/store';
+import { ArrowDown10, ArrowUp01 } from 'lucide-react';
 
 const winnersPerPage = 3;
 
@@ -66,6 +67,23 @@ function Winners() {
     dispatch(winnersPageActions.setPage(targetPage));
   };
 
+  const handleSortingChange = (sort: SortOption) => {
+    setSearchParams((params) => {
+      const newOrder = queryParams.order === 'ASC' ? 'DESC' : 'ASC';
+      const newParams = new URLSearchParams(params);
+      newParams.set('sort', sort);
+      newParams.set('order', newOrder);
+      return newParams;
+    });
+  };
+
+  const orderIcon =
+    queryParams.order === 'ASC' ? (
+      <ArrowUp01 size={16} />
+    ) : (
+      <ArrowDown10 size={16} />
+    );
+
   useEffect(() => {
     const { order, page, sort } = store.getState().winnersPage;
     if (!searchParams.has('sort') && sort) {
@@ -117,10 +135,25 @@ function Winners() {
       <table className={styles.winnersTable}>
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col">
+              <button type="button" onClick={() => handleSortingChange('id')}>
+                id
+                {queryParams.sort === 'id' && orderIcon}
+              </button>
+            </th>
             <th scope="col">Name</th>
-            <th scope="col">Wins</th>
-            <th scope="col">Best time</th>
+            <th scope="col">
+              <button type="button" onClick={() => handleSortingChange('wins')}>
+                wins
+                {queryParams.sort === 'wins' && orderIcon}
+              </button>
+            </th>
+            <th scope="col">
+              <button type="button" onClick={() => handleSortingChange('time')}>
+                best time
+                {queryParams.sort === 'time' && orderIcon}
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>

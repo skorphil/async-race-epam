@@ -37,7 +37,7 @@
 - [x] **Color Selection (10 points):** Allow color selection from an RGB palette ([like here](https://colorspire.com/rgb-color-wheel/)), displaying the selected color on the car's image along with its name.
 - [ ] **Random Car Creation (20 points):** There should be a button to create random cars (100 cars per click). Name should be assembled from two random parts, for example "Tesla" + "Model S", or "Ford" + "Mustang" (At least 10 different names for each part). Color should be also generated randomly.
 - [x] **Car Management Buttons (10 points):** Provide buttons near each car's image for updating its attributes or deleting it.
-- [ ] **Pagination (10 points):** Implement pagination for the "Garage" view, displaying 7 cars per page.
+- [x] **Pagination (10 points):** Implement pagination for the "Garage" view, displaying 7 cars per page.
 - [ ] **EXTRA POINTS (20 points):**
   - [ ] **Empty Garage** Handle empty garage with user friendly message "No Cars" or something like this. Do it at your discretion.
   - [x] **Empty Garage Page** If you remove the last one car on the page, you should be moved on the previous page, to hide the empty one.
