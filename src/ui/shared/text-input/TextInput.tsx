@@ -1,29 +1,25 @@
-import type { ZodType } from 'zod';
-import type { ChangeEvent } from 'react';
 import styles from './TextInput.module.css';
 
 type TextInputProps = {
   value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
   label?: string;
   id?: string;
-  schema?: ZodType;
   disabled?: boolean;
   description?: string;
   errorMessages: string[];
-  setErrors: (errors: string[]) => void;
 };
 
 function TextInput(props: TextInputProps) {
   const {
     value,
     onChange,
+    onBlur,
     label,
     id,
-    schema,
     disabled,
     description,
-    setErrors,
     errorMessages,
   } = props;
 
@@ -41,8 +37,14 @@ function TextInput(props: TextInputProps) {
         className={`${errorMessages.length > 0 && 'border-red-500 border-2'}`}
         id={id}
         type="text"
-        onBlur={(e) => handleBlur(e, setErrors, schema)}
-        onChange={(e) => handleChange(e, onChange, setErrors, schema)}
+        onBlur={(e) => {
+          const { value: v } = e.currentTarget;
+          if (onBlur) onBlur(v);
+        }}
+        onChange={(e) => {
+          const { value: v } = e.currentTarget;
+          if (onChange) onChange(v);
+        }}
         value={value}
         disabled={disabled || false}
       />
@@ -64,33 +66,6 @@ function TextInput(props: TextInputProps) {
       )}
     </div>
   );
-}
-
-function handleBlur(
-  e: ChangeEvent<HTMLInputElement>,
-  setErrors: (errors: string[]) => void,
-  schema?: ZodType,
-) {
-  const newValue = e.target.value;
-  const zValid = schema?.safeParse(newValue);
-  if (zValid?.success === false) {
-    const errorMessages = zValid.error.issues.map((zIssue) => zIssue.message);
-    setErrors(errorMessages);
-  } else {
-    setErrors([]);
-  }
-}
-
-function handleChange(
-  e: ChangeEvent<HTMLInputElement>,
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void,
-  setErrors: (errors: string[]) => void,
-  schema?: ZodType,
-) {
-  const newValue = e.target.value;
-  const zValid = schema?.safeParse(newValue);
-  if (zValid?.success === true) setErrors([]);
-  onChange(e);
 }
 
 export { TextInput };

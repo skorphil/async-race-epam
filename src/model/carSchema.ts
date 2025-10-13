@@ -4,7 +4,10 @@ import z from 'zod';
  * Expected car DTO from API
  */
 const CarSchema = z.object({
-  name: z.string().min(3, 'Minimum 3 characters required'),
+  name: z
+    .string()
+    .min(3, 'Minimum 3 characters required')
+    .max(50, 'Maximum 50 characters'),
   color: z.string(),
   id: z.number(),
 });

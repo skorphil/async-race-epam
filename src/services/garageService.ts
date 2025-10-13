@@ -1,5 +1,6 @@
 import { isCar, isCarsArray, type Car } from '@/model';
 import { backendApi } from './apiService';
+import type { RootState } from '@/store/store';
 
 type GetCarsArgs = {
   page: number;
@@ -9,6 +10,12 @@ type GetCarsArgs = {
 type GetCarsResponse = {
   cars: Car[];
   totalCount: number;
+};
+
+type UpdateCarPayload = {
+  id: number;
+  color?: string;
+  name?: string;
 };
 
 export const garageApi = backendApi.injectEndpoints({
@@ -64,12 +71,42 @@ export const garageApi = backendApi.injectEndpoints({
       }),
       invalidatesTags: ['CarList'],
     }),
-    updateCar: builder.mutation<Car, Car>({
-      query: (car: Car) => ({
-        url: `garage/${car.id}`,
-        method: 'PUT',
-        body: car,
-      }),
+    updateCar: builder.mutation<Car, UpdateCarPayload>({
+      queryFn: async (arg, api, _extraOptions, baseQuery) => {
+        const { id, ...car } = arg;
+
+        const selectCurrentUser = garageApi.endpoints.getCar.select(id);
+
+        const state = api.getState() as RootState;
+        const currentUserQueryState = selectCurrentUser(state);
+
+        const currentUserData = currentUserQueryState.data;
+
+        if (!currentUserData) {
+          return { error: { status: 404, data: 'User not found in cache' } };
+        }
+
+        // 4. Construct the complete payload for the PUT request
+        const fullPayload = {
+          ...currentUserData, // Current server state (id, name, sex)
+          ...car, // Partial updates (e.g., only name)
+        };
+
+        // 5. Use the baseQuery to make the actual API call
+        const result = await baseQuery({
+          url: `garage/${id}`,
+          method: 'PUT',
+          body: fullPayload,
+        });
+
+        // 6. Return the result from the baseQuery
+        return { data: result.data as Car };
+      },
+      // query: (car: Car) => ({
+      //   url: `garage/${car.id}`,
+      //   method: 'PUT',
+      //   body: car,
+      // }),
       invalidatesTags: (_, __, car) => [{ type: 'Car', id: car.id }],
     }),
   }),

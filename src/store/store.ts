@@ -5,9 +5,11 @@ import raceSlice from './raceSlice';
 import winnersPageSlice from './winnersPageSlice';
 import garagePageSlice from './garagePageSlice';
 import newCarFormSlice from './newCarFormSlice';
+import carFormSlice from './carFormSlice';
 
 export const store = configureStore({
   reducer: {
+    [carFormSlice.name]: carFormSlice.reducer,
     [newCarFormSlice.name]: newCarFormSlice.reducer,
     [raceSlice.name]: raceSlice.reducer,
     [garagePageSlice.name]: garagePageSlice.reducer,

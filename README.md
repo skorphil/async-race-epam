@@ -27,15 +27,15 @@
   - [x] Garage section
 - [x] **Winners View Content (10 points):** The "Winners" view should display:
   - [x] Name of view ("Winners")
-  - [ ] Winners table
+  - [x] Winners table
   - [x] Pagination
 - [ ] **Persistent State (30 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
 
 ## Garage View (90 points)
 
-- [ ] **Car Creation And Editing Panel. CRUD Operations (20 points):** Enable users to create, update, and delete cars. A car has two attributes: "name" and "color". Empty and too long names should be handled. For "delete"-operation car should be deleted from "garage" table as well as from "winners".
+- [x] **Car Creation And Editing Panel. CRUD Operations (20 points):** Enable users to create, update, and delete cars. A car has two attributes: "name" and "color". Empty and too long names should be handled. For "delete"-operation car should be deleted from "garage" table as well as from "winners".
 - [x] **Color Selection (10 points):** Allow color selection from an RGB palette ([like here](https://colorspire.com/rgb-color-wheel/)), displaying the selected color on the car's image along with its name.
-- [ ] **Random Car Creation (20 points):** There should be a button to create random cars (100 cars per click). Name should be assembled from two random parts, for example "Tesla" + "Model S", or "Ford" + "Mustang" (At least 10 different names for each part). Color should be also generated randomly.
+- [x] **Random Car Creation (20 points):** There should be a button to create random cars (100 cars per click). Name should be assembled from two random parts, for example "Tesla" + "Model S", or "Ford" + "Mustang" (At least 10 different names for each part). Color should be also generated randomly.
 - [x] **Car Management Buttons (10 points):** Provide buttons near each car's image for updating its attributes or deleting it.
 - [x] **Pagination (10 points):** Implement pagination for the "Garage" view, displaying 7 cars per page.
 - [ ] **EXTRA POINTS (20 points):**
@@ -47,7 +47,7 @@
 - [x] **Display Winners (15 points):** After some car wins it should be displayed at the "Winners view" table.
 - [x] **Pagination for Winners (10 points):** Implement pagination for the "Winners" view, with 10 winners per page.
 - [x] **Winners Table (15 points):** The table should include columns for the car's №, image, name, number of wins, and best time in seconds. If the same car wins more than once the number of wins should be incremented while best time should be saved only if it's better than the stored one.
-- [ ] **Sorting Functionality (10 points):** Allow users to sort the table by the number of wins and best time, in ascending or descending order.
+- [x] **Sorting Functionality (10 points):** Allow users to sort the table by the number of wins and best time, in ascending or descending order.
 
 ## 🚗 Race (170 points)
 
