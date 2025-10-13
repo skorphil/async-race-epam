@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Provider } from 'react-redux';
 import { AppLayout } from './ui/app-layout';

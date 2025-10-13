@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
+import { TrophyIcon, WarehouseIcon } from 'lucide-react';
 import styles from './AppLayout.module.css';
 
 /**
@@ -6,10 +7,18 @@ import styles from './AppLayout.module.css';
  */
 function AppLayout() {
   return (
-    <div className={styles.container}>
-      <NavLink to="/">Garage</NavLink>
-      <NavLink to="/winners">Winners</NavLink>
-      <Outlet />
+    <div className={`${styles.container}`}>
+      <nav className={styles.navigation}>
+        <NavLink to="/">
+          <WarehouseIcon size={24} />
+        </NavLink>
+        <NavLink to="/winners">
+          <TrophyIcon size={24} />
+        </NavLink>
+      </nav>
+      <article className={styles.mainView}>
+        <Outlet />
+      </article>
     </div>
   );
 }
