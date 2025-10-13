@@ -85,7 +85,6 @@ function Garage() {
     <div className={styles.container}>
       {error && <p>{error.error ? error.error : error.message}</p>}
       <p>{totalCount}</p>
-      <button type="button">Add 100 cars</button>
       <NewCarForm />
       {Object.keys(raceState.cars).length === 0 ? (
         <button type="button" onClick={handleRaceStart}>

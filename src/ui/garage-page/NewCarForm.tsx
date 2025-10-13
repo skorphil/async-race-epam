@@ -5,6 +5,7 @@ import type { AppDispatch, RootState } from '@/store/store';
 import { newCarFormActions } from '@/store';
 import { CarSchema } from '@/model';
 import { garageApi } from '@/services';
+import { generateCars } from '@/utils/generateCars';
 
 /**
  * New component
@@ -43,6 +44,19 @@ function NewCarForm() {
     }
   };
 
+  const handleBatchCarsCreate = async () => {
+    const newCars = generateCars(100);
+    const createCarPromises = newCars.map((car) => createCar(car));
+    try {
+      const results = await Promise.all(createCarPromises);
+      console.log('All cars created successfully:', results);
+      return results;
+    } catch (error) {
+      console.error('One or more car creations failed:', error);
+      throw error;
+    }
+  };
+
   return (
     <div>
       <form>
@@ -56,9 +70,12 @@ function NewCarForm() {
           setErrors={handleSetNameErrors}
         />
         <input type="color" value={color} onChange={handleSetColor} />
+        <button type="submit" onClick={(e) => handleSubmit(e)}>
+          Create car
+        </button>
       </form>
-      <button type="submit" onClick={(e) => handleSubmit(e)}>
-        Create car
+      <button onClick={handleBatchCarsCreate} type="button">
+        Add 100 cars
       </button>
     </div>
   );
