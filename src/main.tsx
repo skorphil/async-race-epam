@@ -6,15 +6,16 @@ import { Provider } from 'react-redux';
 import { AppLayout } from './ui/app-layout';
 import { Garage } from './ui/garage-page';
 import { Winners } from './ui/winners-page';
-
 import { store } from './store/store';
 import { RaceContextProvider } from './ui/providers';
+
+const basePath = 'async-race-epam';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <RaceContextProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={basePath}>
           <Routes>
             <Route element={<AppLayout />}>
               <Route path="/" element={<Garage />} />

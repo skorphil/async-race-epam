@@ -32,5 +32,5 @@ I tried to make this abstract app to look somewhat like an app, rather than an a
 - There is `getRunningMutationThunk` method which might replace my ContextApi, where I store all the ongoing promises, and simplify code a bit
 - Optimistic updates after removing/resetting the car(now UI is freezes, because it's waiting for engine being stopped before updating UI)
 - Better UI components. I used just basic styles without thinking much about design and a11y. (for example pagination not adopted for 200+ cars)
-- Writing tests
+- Writing tests. I started with a tests for initial services, but switched to RTK Query and later realized they will take much more time to test like animation etc
 - Better error handling for endpoints
