@@ -20,16 +20,16 @@
 ## Basic Structure (80 points)
 
 - [x] **Two Views (10 points):** Implement two primary views: "Garage" and "Winners".
-- [ ] **Garage View Content (30 points):** The "Garage" view must display:
+- [x] **Garage View Content (30 points):** The "Garage" view must display:
   - [x] Name of view
-  - [ ] Car creation and editing panel
+  - [x] Car creation and editing panel
   - [x] Race control panel
   - [x] Garage section
 - [x] **Winners View Content (10 points):** The "Winners" view should display:
   - [x] Name of view ("Winners")
   - [x] Winners table
   - [x] Pagination
-- [ ] **Persistent State (30 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
+- [x] **Persistent State (30 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
 
 ## Garage View (90 points)
 
@@ -38,8 +38,8 @@
 - [x] **Random Car Creation (20 points):** There should be a button to create random cars (100 cars per click). Name should be assembled from two random parts, for example "Tesla" + "Model S", or "Ford" + "Mustang" (At least 10 different names for each part). Color should be also generated randomly.
 - [x] **Car Management Buttons (10 points):** Provide buttons near each car's image for updating its attributes or deleting it.
 - [x] **Pagination (10 points):** Implement pagination for the "Garage" view, displaying 7 cars per page.
-- [ ] **EXTRA POINTS (20 points):**
-  - [ ] **Empty Garage** Handle empty garage with user friendly message "No Cars" or something like this. Do it at your discretion.
+- [x] **EXTRA POINTS (20 points):**
+  - [x] **Empty Garage** Handle empty garage with user friendly message "No Cars" or something like this. Do it at your discretion.
   - [x] **Empty Garage Page** If you remove the last one car on the page, you should be moved on the previous page, to hide the empty one.
 
 ## 🏆 Winners View (50 points)
@@ -56,13 +56,13 @@
 - [x] **Responsive Animation (30 points):** Ensure car animations are fluid and responsive on screens as small as 500px.
 - [x] **Start Race Button (10 points):** Start button should start the race for all cars on the current page.
 - [x] **Reset Race Button (15 points):** Reset button should return all cars to their starting positions.
-- [ ] **Winner Announcement (5 points):** After some car finishes first user should see the message contains car's name that shows which one has won.
+- [x] **Winner Announcement (5 points):** After some car finishes first user should see the message contains car's name that shows which one has won.
 - [x] **Button States (20 points):** Start engine button should be disabled in case car is already in driving mode. As well as stop engine button should be disabled when car is on it's initial place.
 - [x] **Actions during the race (50 points):** Control over actions during a running race. Such as, deleting or editing a car, changing a page or view. Adding new cars. You can block buttons and stop the race. The main thing is to ensure predictable operation of the application.
 
 ## 🎨 Prettier and ESLint Configuration (10 points)
 
-- [ ] **Prettier Setup (5 points):** Prettier is correctly set up with two scripts in `package.json`: `format` for auto-formatting and `ci:format` for checking issues.
+- [x] **Prettier Setup (5 points):** Prettier is correctly set up with two scripts in `package.json`: `format` for auto-formatting and `ci:format` for checking issues.
 - [x] **ESLint Configuration (5 points):** ESLint is configured with the [Airbnb style guide](https://www.npmjs.com/package/eslint-config-airbnb). A `lint` script in `package.json` runs ESLint checks. Configuration files should reflect strict TypeScript settings as per `tsconfig.json`.
 
 ## 🌟 Overall Code Quality. (100 points) _Skip during self-check_

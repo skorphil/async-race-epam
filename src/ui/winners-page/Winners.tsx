@@ -1,15 +1,16 @@
 import { useSearchParams } from 'react-router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { ArrowDown10, ArrowUp01 } from 'lucide-react';
 import { winnersApi } from '@/services';
 import styles from './Winners.module.css';
-import WinnerRow from './WinnerRow';
+import { WinnerRow } from './winner-row';
 import { store, type AppDispatch } from '@/store/store';
-import Pagination from '../shared/Pagination';
+import Pagination from '../shared/pagination/Pagination';
 import { winnersPageActions } from '@/store';
-import { ArrowDown10, ArrowUp01 } from 'lucide-react';
+import { ContentContainer } from '../shared/content-container';
 
-const winnersPerPage = 3;
+const winnersPerPage = 10;
 
 type NumberString = string;
 type SortOption = 'wins' | 'id' | 'time';
@@ -79,10 +80,18 @@ function Winners() {
 
   const orderIcon =
     queryParams.order === 'ASC' ? (
-      <ArrowUp01 size={16} />
+      <ArrowUp01 size={20} />
     ) : (
-      <ArrowDown10 size={16} />
+      <ArrowDown10 size={20} />
     );
+
+  const pagination = (
+    <Pagination
+      onPageChange={handlePageChange}
+      pageCount={Math.ceil(totalCount / winnersPerPage)}
+      currentPage={queryParams.page}
+    />
+  );
 
   useEffect(() => {
     const { order, page, sort } = store.getState().winnersPage;
@@ -129,29 +138,64 @@ function Winners() {
   }, [winners, totalCount]);
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.header}>Winners</h2>
-      <p>{`Total: ${totalCount}`}</p>
+    <ContentContainer
+      headerText={`Winners (${totalCount})`}
+      footer={pagination}
+    >
       <table className={styles.winnersTable}>
         <thead>
           <tr>
             <th scope="col">
-              <button type="button" onClick={() => handleSortingChange('id')}>
+              <button
+                type="button"
+                className={styles.sortButton}
+                onClick={() => handleSortingChange('id')}
+              >
                 id
-                {queryParams.sort === 'id' && orderIcon}
+                <div
+                  style={{
+                    visibility:
+                      queryParams.sort === 'id' ? undefined : 'hidden',
+                  }}
+                >
+                  {orderIcon}
+                </div>
               </button>
             </th>
             <th scope="col">Name</th>
+            <th scope="col">Color</th>
             <th scope="col">
-              <button type="button" onClick={() => handleSortingChange('wins')}>
+              <button
+                className={styles.sortButton}
+                type="button"
+                onClick={() => handleSortingChange('wins')}
+              >
                 wins
-                {queryParams.sort === 'wins' && orderIcon}
+                <div
+                  style={{
+                    visibility:
+                      queryParams.sort === 'wins' ? undefined : 'hidden',
+                  }}
+                >
+                  {orderIcon}
+                </div>
               </button>
             </th>
             <th scope="col">
-              <button type="button" onClick={() => handleSortingChange('time')}>
+              <button
+                className={styles.sortButton}
+                type="button"
+                onClick={() => handleSortingChange('time')}
+              >
                 best time
-                {queryParams.sort === 'time' && orderIcon}
+                <div
+                  style={{
+                    visibility:
+                      queryParams.sort === 'time' ? undefined : 'hidden',
+                  }}
+                >
+                  {orderIcon}
+                </div>
               </button>
             </th>
           </tr>
@@ -162,12 +206,7 @@ function Winners() {
           ))}
         </tbody>
       </table>
-      <Pagination
-        onPageChange={handlePageChange}
-        pageCount={Math.ceil(totalCount / winnersPerPage)}
-        currentPage={queryParams.page}
-      />
-    </div>
+    </ContentContainer>
   );
 }
 

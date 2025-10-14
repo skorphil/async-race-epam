@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { TextInput } from '../../shared/text-input/TextInput';
+import { TextInput } from '@/ui/shared/text-input';
 import type { AppDispatch, RootState } from '@/store/store';
 import { carFormActions } from '@/store';
 import { CarSchema } from '@/model';

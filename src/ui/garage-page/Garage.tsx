@@ -1,14 +1,15 @@
 import { useSearchParams } from 'react-router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import styles from './Garage.module.css';
-import useRace from './useRace';
-import { garageApi } from '@/services';
-import Pagination from '../shared/Pagination';
-import { garagePageActions, store } from '@/store';
 import type { AppDispatch } from '@/store/store';
-import NewCarForm from './new-car-form/NewCarForm';
+import styles from './Garage.module.css';
+import { garageApi } from '@/services';
+import { Pagination } from '@/ui/shared/pagination';
+import { garagePageActions, store } from '@/store';
+import { NewCarForm } from './new-car-form';
 import { CarContainer } from './car-container';
+import useRace from './hooks/useRace';
+import { ContentContainer } from '../shared/content-container';
 
 const carsPerPage = 7;
 type NumberString = string;
@@ -92,27 +93,35 @@ function Garage() {
       </button>
     );
 
-  return (
-    <div className={styles.container}>
-      {error && <p>{error.error ? error.error : error.message}</p>}
-      <header className={styles.header}>
-        <h2>{`Garage (${totalCount})`}</h2>
-        {raceButton}
-      </header>
-      <div className={styles.content}>
+  const pagination = (
+    <Pagination
+      currentPage={queryParams.page}
+      onPageChange={handlePageSave}
+      pageCount={Math.ceil(totalCount / carsPerPage)}
+    />
+  );
+
+  const content =
+    cars.length === 0 ? (
+      <p>Add cars to garage first</p>
+    ) : (
+      <>
         <NewCarForm />
         <section className={styles.carsList}>
           {cars?.map((car) => (
             <CarContainer key={`car-${car.id}`} id={car.id} />
           ))}
         </section>
-      </div>
-      <Pagination
-        currentPage={queryParams.page}
-        onPageChange={handlePageSave}
-        pageCount={Math.ceil(totalCount / carsPerPage)}
-      />
-    </div>
+      </>
+    );
+  return (
+    <ContentContainer
+      headerText={`Garage (${totalCount})`}
+      headerControls={raceButton}
+      footer={pagination}
+    >
+      {content}
+    </ContentContainer>
   );
 }
 

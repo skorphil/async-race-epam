@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { MouseEvent } from 'react';
 import { PlusIcon } from 'lucide-react';
 import styles from './NewCarForm.module.css';
-import { TextInput } from '../../shared/text-input/TextInput';
+import { TextInput } from '@/ui/shared/text-input';
 import type { AppDispatch, RootState } from '@/store/store';
 import { newCarFormActions } from '@/store';
 import { CarSchema } from '@/model';
@@ -47,7 +47,7 @@ function NewCarForm() {
         color,
         name,
       });
-      dispatch(newCarFormActions.setFormState({ name: 'New Car' }));
+      dispatch(newCarFormActions.setFormState({ name: '' }));
     }
   };
 

@@ -2,10 +2,11 @@ import { useSelector } from 'react-redux';
 import { TrashIcon } from 'lucide-react';
 import { garageApi, winnersApi } from '@/services';
 import type { RootState } from '@/store/store';
-import useRace from '../useRace';
+import useRace from '../hooks/useRace';
 import { RaceTrack } from '../race-track';
 import { EditCarForm } from '../edit-car-form';
 import styles from './CarContainer.module.css';
+import { calculateAnimation } from './utils/calculateAnimation';
 
 type CarGarageContainerProps = {
   id: number;
@@ -79,48 +80,3 @@ function CarContainer(props: CarGarageContainerProps) {
 }
 
 export default CarContainer;
-
-type AnimationParams = {
-  initialPosition?: number;
-  targetPosition?: number;
-  timeToFinish?: number;
-};
-
-type CalculateAnimationParams = {
-  carState?: string | null;
-  driveStarted?: number;
-  driveStopped?: number;
-  time?: number;
-};
-
-function calculateAnimation(params: CalculateAnimationParams) {
-  const { carState, driveStarted, driveStopped, time } = params;
-
-  const animationParams: AnimationParams = {};
-
-  if (carState === 'drive') {
-    if (driveStarted && time) {
-      const initialPosition = ((Date.now() - driveStarted) / time) * 100;
-      animationParams.initialPosition = initialPosition;
-      animationParams.timeToFinish = time - (Date.now() - driveStarted);
-      animationParams.targetPosition = 100;
-    } else {
-      animationParams.initialPosition = 0;
-      animationParams.timeToFinish = time;
-      animationParams.targetPosition = 100;
-    }
-  }
-  if (carState === 'broken') {
-    if (driveStopped && driveStarted && time) {
-      const initialPosition = ((driveStopped - driveStarted) / time) * 100;
-      animationParams.initialPosition = initialPosition;
-    }
-  }
-  if (carState === 'finished') {
-    animationParams.initialPosition = 100;
-  }
-
-  if (!animationParams.initialPosition) animationParams.initialPosition = 0;
-
-  return animationParams;
-}

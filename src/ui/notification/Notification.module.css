@@ -1,0 +1,15 @@
+.container {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  min-width: 400px;
+  background-color: var(--pico-contrast-background);
+  color: #181c25 !important;
+}
+
+.container > h2 {
+  color: #181c25 !important;
+}
+.container > p {
+  color: #181c25 !important;
+}

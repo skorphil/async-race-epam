@@ -14,10 +14,16 @@ function WinnerRow(props: WinnersTableProps) {
 
   return (
     <tr className={styles.row}>
-      <td className={styles.cell}>{winner?.id}</td>
-      <td className={styles.cell}>{car?.name}</td>
-      <td className={styles.cell}>{winner?.wins}</td>
-      <td className={styles.cell}>{winner?.time}</td>
+      <td className={styles.number}>{winner?.id}</td>
+      <td>{car?.name}</td>
+      <td>
+        <div
+          aria-label={`Car color: ${car?.color}`}
+          style={{ width: '24px', height: '24px', backgroundColor: car?.color }}
+        />
+      </td>
+      <td className={styles.number}>{winner?.wins}</td>
+      <td className={styles.number}>{winner?.time}</td>
     </tr>
   );
 }

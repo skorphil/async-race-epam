@@ -24,7 +24,7 @@ function Pagination(props: PaginationProps) {
           to={`?page=${pageId}`}
           className={() => {
             const isCurrentPage = pageId === currentPage;
-            return isCurrentPage ? styles.activeLink : 'null';
+            return `${isCurrentPage ? styles.activeLink : 'null'} ${styles.link}`;
           }}
         >
           {pageId}

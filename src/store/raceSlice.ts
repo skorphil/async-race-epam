@@ -13,7 +13,13 @@ type CarRaceState = {
   time?: number;
 };
 
+type Winner = {
+  name: string;
+  time: number;
+};
+
 type RaceState = {
+  winner?: Winner;
   cars: Record<number, CarRaceState>;
 };
 
@@ -31,6 +37,9 @@ const raceSlice = createSlice({
     resetCarRace: (state, action: PayloadAction<number>) => {
       const id = action.payload;
       delete state.cars[id];
+    },
+    setWinner: (state, action: PayloadAction<Winner | undefined>) => {
+      state.winner = action.payload;
     },
   },
   extraReducers: (builder) => {

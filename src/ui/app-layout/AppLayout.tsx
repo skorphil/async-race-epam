@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router';
 import { TrophyIcon, WarehouseIcon } from 'lucide-react';
 import styles from './AppLayout.module.css';
+import Notification from '../notification/Notification';
 
 /**
  * Global App Layout
@@ -19,6 +20,7 @@ function AppLayout() {
       <article className={styles.mainView}>
         <Outlet />
       </article>
+      <Notification />
     </div>
   );
 }

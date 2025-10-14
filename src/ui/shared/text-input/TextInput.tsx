@@ -65,4 +65,4 @@ function TextInput(props: TextInputProps) {
   );
 }
 
-export { TextInput };
+export default TextInput;
