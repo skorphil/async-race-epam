@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route element={<AppLayout />}>
               <Route path="/" element={<Garage />} />
-              <Route path="winners" element={<Winners />} />
+              <Route path="/winners" element={<Winners />} />
             </Route>
           </Routes>
         </BrowserRouter>
