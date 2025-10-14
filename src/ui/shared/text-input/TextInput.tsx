@@ -27,14 +27,13 @@ function TextInput(props: TextInputProps) {
     <div className={styles.container}>
       {label && id && (
         <label htmlFor={id}>
-          <div className={styles.label}>
-            {label}
-            {errorMessages.length > 0 && <span>alert</span>}
-          </div>
+          <div className={styles.label}>{label}</div>
         </label>
       )}
       <input
-        className={`${errorMessages.length > 0 && 'border-red-500 border-2'}`}
+        aria-invalid={errorMessages.length > 0 || undefined}
+        aria-describedby="invalid-helper"
+        className={`${errorMessages.length > 0 && styles.error} ${styles.input}`}
         id={id}
         type="text"
         onBlur={(e) => {
@@ -54,15 +53,13 @@ function TextInput(props: TextInputProps) {
         </div>
       )}
       {errorMessages.length > 0 && (
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-col">
-            {errorMessages.map((message) => (
-              <div key={`${message}-${id}`} className="text-xs">
-                {message}
-              </div>
-            ))}
-          </div>
-        </div>
+        <small
+          id="invalid-helper"
+          key={`${errorMessages[0]}-${id}`}
+          className={styles.errorMessage}
+        >
+          {errorMessages[0]}
+        </small>
       )}
     </div>
   );

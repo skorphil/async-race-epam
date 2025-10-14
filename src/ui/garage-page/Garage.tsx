@@ -2,13 +2,13 @@ import { useSearchParams } from 'react-router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './Garage.module.css';
-import CarGarageContainer from './CarGarageContainer';
 import useRace from './useRace';
 import { garageApi } from '@/services';
 import Pagination from '../shared/Pagination';
 import { garagePageActions, store } from '@/store';
 import type { AppDispatch } from '@/store/store';
-import NewCarForm from './NewCarForm';
+import NewCarForm from './new-car-form/NewCarForm';
+import { CarContainer } from './car-container';
 
 const carsPerPage = 7;
 type NumberString = string;
@@ -81,25 +81,32 @@ function Garage() {
     raceReset();
   }
 
+  const raceButton =
+    Object.keys(raceState.cars).length === 0 ? (
+      <button type="button" onClick={handleRaceStart}>
+        Start all
+      </button>
+    ) : (
+      <button type="button" onClick={handleRaceReset}>
+        Reset all
+      </button>
+    );
+
   return (
     <div className={styles.container}>
       {error && <p>{error.error ? error.error : error.message}</p>}
-      <p>{totalCount}</p>
-      <NewCarForm />
-      {Object.keys(raceState.cars).length === 0 ? (
-        <button type="button" onClick={handleRaceStart}>
-          Race Start
-        </button>
-      ) : (
-        <button type="button" onClick={handleRaceReset}>
-          Race Reset
-        </button>
-      )}
-      <section className={styles.carsList}>
-        {cars?.map((car) => (
-          <CarGarageContainer key={`car-${car.id}`} id={car.id} />
-        ))}
-      </section>
+      <header className={styles.header}>
+        <h2>{`Garage (${totalCount})`}</h2>
+        {raceButton}
+      </header>
+      <div className={styles.content}>
+        <NewCarForm />
+        <section className={styles.carsList}>
+          {cars?.map((car) => (
+            <CarContainer key={`car-${car.id}`} id={car.id} />
+          ))}
+        </section>
+      </div>
       <Pagination
         currentPage={queryParams.page}
         onPageChange={handlePageSave}

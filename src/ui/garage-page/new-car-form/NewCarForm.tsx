@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { MouseEvent } from 'react';
-import { TextInput } from '../shared/text-input/TextInput';
+import { PlusIcon } from 'lucide-react';
+import styles from './NewCarForm.module.css';
+import { TextInput } from '../../shared/text-input/TextInput';
 import type { AppDispatch, RootState } from '@/store/store';
 import { newCarFormActions } from '@/store';
 import { CarSchema } from '@/model';
@@ -56,8 +58,8 @@ function NewCarForm() {
   };
 
   return (
-    <div>
-      <form>
+    <div className={styles.container}>
+      <form className={styles.carForm}>
         <TextInput
           onChange={handleSetName}
           value={name}
@@ -66,15 +68,24 @@ function NewCarForm() {
           errorMessages={nameErrors}
         />
         <input
+          className={styles.colorInput}
           type="color"
           value={color}
           onChange={(e) => handleSetColor(e.currentTarget.value)}
         />
-        <button type="submit" onClick={(e) => handleSubmit(e)}>
-          Create car
+        <button
+          type="submit"
+          className={styles.submitButton}
+          onClick={(e) => handleSubmit(e)}
+        >
+          <PlusIcon />
         </button>
       </form>
-      <button onClick={handleBatchCarsCreate} type="button">
+      <button
+        className="secondary outline"
+        onClick={handleBatchCarsCreate}
+        type="button"
+      >
         Add 100 cars
       </button>
     </div>

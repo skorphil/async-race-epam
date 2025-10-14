@@ -1,7 +1,7 @@
 import { type ReactElement } from 'react';
 import styles from './CarContainer.module.css';
 import { garageApi } from '@/services/garageService';
-import EditCarForm from '../garage-page/EditCarForm';
+import EditCarForm from '../garage-page/edit-car-form/EditCarForm';
 
 type CarContainerProps = { id: number; children?: ReactElement };
 

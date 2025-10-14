@@ -1,0 +1,16 @@
+.colorInput {
+  width: 60px !important;
+  padding: 0 !important;
+  border-radius: 999px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.carForm {
+  display: flex;
+  align-items: end;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: 12px;
+}

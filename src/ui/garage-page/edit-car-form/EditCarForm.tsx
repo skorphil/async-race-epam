@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { TextInput } from '../shared/text-input/TextInput';
+import { TextInput } from '../../shared/text-input/TextInput';
 import type { AppDispatch, RootState } from '@/store/store';
 import { carFormActions } from '@/store';
 import { CarSchema } from '@/model';
 import { garageApi } from '@/services';
+import styles from './EditCarForm.module.css';
 
 type EditCarFormProps = {
   id: number;
@@ -69,26 +70,24 @@ function EditCarForm(props: EditCarFormProps) {
   }, [serverName, serverColor]);
 
   return (
-    <div>
-      <form>
-        <TextInput
-          onChange={handleSetName}
-          onBlur={handleSubmitName}
-          value={name}
-          label="Name"
-          id="new-car-form-name"
-          errorMessages={nameErrors || []}
-        />
-        <input
-          type="color"
-          value={serverColor}
-          onChange={(e) => {
-            const { value } = e.currentTarget;
-            handleSubmitColor(value);
-          }}
-        />
-      </form>
-    </div>
+    <form className={styles.carForm}>
+      <TextInput
+        onChange={handleSetName}
+        onBlur={handleSubmitName}
+        value={name}
+        id={`edit-car-form-name-${id}`}
+        errorMessages={nameErrors || []}
+      />
+      <input
+        type="color"
+        className={styles.colorInput}
+        value={serverColor}
+        onChange={(e) => {
+          const { value } = e.currentTarget;
+          handleSubmitColor(value);
+        }}
+      />
+    </form>
   );
 }
 
