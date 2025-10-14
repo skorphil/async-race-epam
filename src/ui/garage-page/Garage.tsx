@@ -37,7 +37,7 @@ function getQueryParams(page: unknown) {
 function Garage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParams = getQueryParams(searchParams.get('page'));
-  const { data, error } = garageApi.useGetCarsQuery(queryParams);
+  const { data } = garageApi.useGetCarsQuery(queryParams);
   const { raceReset, raceStart, raceState } = useRace({
     cars: data?.cars || [],
   });
@@ -105,14 +105,11 @@ function Garage() {
     cars.length === 0 ? (
       <p>Add cars to garage first</p>
     ) : (
-      <>
-        <NewCarForm />
-        <section className={styles.carsList}>
-          {cars?.map((car) => (
-            <CarContainer key={`car-${car.id}`} id={car.id} />
-          ))}
-        </section>
-      </>
+      <section className={styles.carsList}>
+        {cars?.map((car) => (
+          <CarContainer key={`car-${car.id}`} id={car.id} />
+        ))}
+      </section>
     );
   return (
     <ContentContainer
@@ -120,7 +117,10 @@ function Garage() {
       headerControls={raceButton}
       footer={pagination}
     >
-      {content}
+      <>
+        <NewCarForm />
+        {content}
+      </>
     </ContentContainer>
   );
 }
