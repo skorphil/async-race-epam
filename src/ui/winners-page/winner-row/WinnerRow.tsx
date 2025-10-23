@@ -1,3 +1,4 @@
+import { CarIcon } from 'lucide-react';
 import styles from './WinnerRow.module.css';
 import { garageApi, winnersApi } from '@/services';
 
@@ -17,10 +18,7 @@ function WinnerRow(props: WinnersTableProps) {
       <td className={styles.number}>{winner?.id}</td>
       <td>{car?.name}</td>
       <td>
-        <div
-          aria-label={`Car color: ${car?.color}`}
-          style={{ width: '24px', height: '24px', backgroundColor: car?.color }}
-        />
+        <CarIcon color={car?.color} />
       </td>
       <td className={styles.number}>{winner?.wins}</td>
       <td className={styles.number}>{winner?.time}</td>

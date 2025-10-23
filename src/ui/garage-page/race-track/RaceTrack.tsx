@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CarIcon } from 'lucide-react';
 import styles from './RaceTrack.module.css';
 
 type RaceTrackProps = {
@@ -27,13 +28,13 @@ function RaceTrack(props: RaceTrackProps) {
 
   return (
     <div className={styles.container}>
-      <div
+      <CarIcon
+        size={32}
+        color={trackColor}
         style={{
-          width: `${width}%`,
-          backgroundColor: trackColor,
-          transition: `width ${timeToFinish || 0}ms linear`,
+          marginLeft: `${width}%`,
+          transition: `margin-left ${timeToFinish || 0}ms linear`,
         }}
-        className={styles.progress}
       />
     </div>
   );

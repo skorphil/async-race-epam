@@ -4,6 +4,7 @@
 
 .container {
   margin: 12px 0;
+  padding: 0 40px 0 8px;
   border-radius: 999px;
   background-color: var(--pico-secondary-background);
   overflow: hidden;
