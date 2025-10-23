@@ -1,6 +1,12 @@
 import { createContext, useRef, type ReactElement } from 'react';
+import type { SerializedError } from '@reduxjs/toolkit';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { Engine } from '@/services/engineService';
 
-type RtkAbortablePromise = Promise<any> & {
+type RtkAbortablePromise = Promise<{
+  data?: Engine | void;
+  error?: undefined | SerializedError | FetchBaseQueryError;
+}> & {
   abort: () => void;
 };
 

@@ -95,7 +95,6 @@ function useRace(props: UseRaceProps) {
       return drivePromise.unwrap().then(() => id);
     });
     const winner = await Promise.any(carPromises);
-    // TODO Popup call
     if (winner) {
       const { time } = store.getState().race.cars[winner];
       const roundedTime = Math.round(((time || 0) / 1000) * 100) / 100;

@@ -31,6 +31,7 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'error',
     'operator-linebreak': ['error', 'after'], // conflicting with prettier
     'function-paren-newline': 'off', // conflicting with a prettier
     'object-curly-newline': 'off',

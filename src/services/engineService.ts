@@ -1,6 +1,6 @@
 import { backendApi } from './apiService';
 
-type Engine = {
+export type Engine = {
   velocity: number;
   distance: number;
 };
