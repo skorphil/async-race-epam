@@ -6,6 +6,7 @@ import { carFormActions } from '@/store';
 import { CarSchema } from '@/model';
 import { garageApi } from '@/services';
 import styles from './EditCarForm.module.css';
+import { debounce } from '@/utils/debounce';
 
 type EditCarFormProps = {
   id: number;
@@ -37,8 +38,15 @@ function EditCarForm(props: EditCarFormProps) {
     dispatch(carFormActions.setFormState({ id, name: value }));
   };
 
+  const debouncedUpdateColor = debounce(
+    (carData: { id: number; color: string }) => {
+      updateCar(carData);
+    },
+    300,
+  );
+
   const handleSubmitColor = (value: string) => {
-    updateCar({
+    debouncedUpdateColor({
       id,
       color: value,
     });
